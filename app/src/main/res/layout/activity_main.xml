@@ -107,23 +107,23 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:id="@+id/card_refresh"
+            android:layout_width="48dp"
             android:layout_height="48dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="6dp"
-            app:cardBackgroundColor="#F2F2F7"
-            android:layout_marginRight="8dp">
+            app:cardBackgroundColor="#F2F2F7">
 
-        <ImageButton
-            android:id="@+id/btn_refresh"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_menu_refresh"
-            android:scaleType="fitCenter"
-            android:padding="11dp"
-            android:contentDescription="Refresh" />
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/btn_refresh"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_menu_refresh"
+                android:scaleType="fitCenter"
+                android:padding="11dp"
+                android:contentDescription="Refresh" />
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
