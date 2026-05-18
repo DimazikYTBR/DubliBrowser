@@ -87,25 +87,5 @@ public class MainActivity extends AppCompatActivity {
             webView.getPaddingRight(),
             paddingInPx
         );
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            CardView cardNav = findViewById(R.id.card_nav);
-            CardView cardSearch = findViewById(R.id.card_search);
-            CardView cardRefresh = findViewById(R.id.card_refresh);
-
-            int translucentWhite = Color.argb(150, 255, 255, 255);
-            
-            if (cardNav != null) cardNav.setCardBackgroundColor(translucentWhite);
-            if (cardSearch != null) cardSearch.setCardBackgroundColor(translucentWhite);
-            if (cardRefresh != null) cardRefresh.setCardBackgroundColor(translucentWhite);
-
-            RenderEffect blurEffect = RenderEffect.createBlurEffect(
-                    25f, 25f, Shader.TileMode.CLAMP
-            );
-
-            if (cardNav != null) cardNav.setRenderEffect(blurEffect);
-            if (cardSearch != null) cardSearch.setRenderEffect(blurEffect);
-            if (cardRefresh != null) cardRefresh.setRenderEffect(blurEffect);
-        }
     }
 }
