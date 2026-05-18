@@ -32,7 +32,7 @@
             android:paddingRight="6dp">
 
             <ImageButton
-                android:id="@+id/btn_back"
+                android:id="@+id/btnBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -42,7 +42,7 @@
                 android:contentDescription="Back" />
 
             <ImageButton
-                android:id="@+id/btn_forward"
+                android:id="@+id/btnForward"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -56,16 +56,16 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="8dp"
-                android:src="@android:drawable/ic_menu_search"
+                android:src="@drawable/ic_menu_search"
                 app:tint="#666666" />
 
             <EditText
-                android:id="@+id/address_bar"
+                android:id="@+id/urlInput"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="9to5mac.com"
+                android:hint="Search or type URL"
                 android:inputType="textUri"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
@@ -79,7 +79,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/stat_notify_sync"
+                android:src="@drawable/ic_menu_refresh"
                 android:scaleType="fitCenter"
                 android:padding="10dp"
                 app:tint="#666666" />
