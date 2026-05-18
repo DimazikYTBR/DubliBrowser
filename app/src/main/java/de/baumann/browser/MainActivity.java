@@ -1,7 +1,10 @@
 package de.baumann.browser;
 
+import android.graphics.Color;
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -9,6 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText urlInput;
     private ImageButton btnBack;
     private ImageButton btnForward;
+    private ImageButton btnRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,33 +31,26 @@ public class MainActivity extends AppCompatActivity {
         urlInput = findViewById(R.id.urlInput);
         btnBack = findViewById(R.id.btnBack);
         btnForward = findViewById(R.id.btnForward);
+        btnRefresh = findViewById(R.id.btn_refresh);
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
 
+        webView.loadUrl("https://google.com");
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
                 urlInput.setText(url);
-            }
-        });
 
-        webView.loadUrl("https://www.google.com");
-
-        urlInput.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    String url = urlInput.getText().toString().trim();
-                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                        url = "https://" + url;
-                    }
-                    webView.loadUrl(url);
-                    return true;
+                if (view.canGoForward()) {
+                    btnForward.setVisibility(View.VISIBLE);
+                } else {
+                    btnForward.setVisibility(View.GONE);
                 }
-                return false;
             }
         });
 
@@ -73,14 +71,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
 
-    @Override
-    public void onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.reload();
+            }
+        });
+
+        float density = getResources().getDisplayMetrics().density;
+        int paddingInPx = (int) (80 * density);
+        webView.setPadding(
+            webView.getPaddingLeft(),
+            webView.getPaddingTop(),
+            webView.getPaddingRight(),
+            paddingInPx
+        );
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            CardView cardNav = findViewById(R.id.card_nav);
+            CardView cardSearch = findViewById(R.id.card_search);
+            CardView cardRefresh = findViewById(R.id.card_refresh);
+
+            int translucentWhite = Color.argb(150, 255, 255, 255);
+            
+            if (cardNav != null) cardNav.setCardBackgroundColor(translucentWhite);
+            if (cardSearch != null) cardSearch.setCardBackgroundColor(translucentWhite);
+            if (cardRefresh != null) cardRefresh.setCardBackgroundColor(translucentWhite);
+
+            RenderEffect blurEffect = RenderEffect.createBlurEffect(
+                    25f, 25f, Shader.TileMode.CLAMP
+            );
+
+            if (cardNav != null) cardNav.setRenderEffect(blurEffect);
+            if (cardSearch != null) cardSearch.setRenderEffect(blurEffect);
+            if (cardRefresh != null) cardRefresh.setRenderEffect(blurEffect);
         }
     }
 }
