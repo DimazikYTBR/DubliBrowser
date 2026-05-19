@@ -1,4 +1,3 @@
-### v 3
-- new: advanced gesture settings
-- new: show overview on start
-- fix: light settings theme
+### v 5
+- new: new  icons
+- fix: blur deleted
