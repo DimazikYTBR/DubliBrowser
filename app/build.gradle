@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     namespace 'de.baumann.browser'
 
-    compileSdkVersion 34
+    compileSdkVersion 36
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -12,12 +12,12 @@ android {
 
     defaultConfig {
         applicationId "de.baumann.browser"
-        minSdkVersion 24
+        minSdkVersion 33
 
-        targetSdkVersion 34
+        targetSdkVersion 36
         
         versionCode 135
-        versionName "4 (17)"
+        versionName "5.1 (24)"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
