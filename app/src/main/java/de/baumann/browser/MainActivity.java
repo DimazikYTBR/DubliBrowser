@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnBack;
     private ImageButton btnForward;
     private ImageButton btnRefresh;
+    private ImageButton btnMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
