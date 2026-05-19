@@ -106,12 +106,13 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_refresh"
-            android:layout_width="48dp"
+            android:id="@+id/card_nav"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="6dp"
-            app:cardBackgroundColor="#F2F2F7">
+            app:cardBackgroundColor="#F2F2F7"
+            android:layout_marginRight="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
