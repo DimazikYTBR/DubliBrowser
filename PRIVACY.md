@@ -40,23 +40,3 @@ DubliBrowse does not require the services of third parties. It is designed to fu
 This privacy policy may be updated from time to time as the functionalities of the software are further developed and improved and may likely contain disparities that will nullify this current policy. <hr>
       
 ## Disclaimer    
-
-DubliBrowse is developed in good faith for general use. The developer will not in any way be liable or shouldn't be held accountable for any losses and/or damages in connection with the use of the software. <hr>
-
-## About
-
-DubliBrowse is an open source browser developed for the Android operating system. It is light and has an easy to understand UI. 
-
-Some features of DubliBrowse include;
-
-- search on site
-- open links in the background
-- Web search (from marked text context menu)
-- screenshots of the whole website
-- open links in other apps (for example YouTube)
-
-Please spread the word and share this app with anyone you think could benefit from it.  <hr>
-
-## Contact 
-
-DubliBrowse would certainly improve with contributions from the open source community. Feel free to make contributions and suggestions to this project either by opening an issue or implementing opening pull requests of those suggestions and improvements. For further inquiry regarding this privacy policy or any other issue relating to the development or within the circumference of DubliBrowse, please contact the developer directly via email or by opening an [issue](https://github.com/scoute-dich/browser/issues/new) on the app's official repository here on Github. Please also check if the issue you want to open hasn't been previously open.
