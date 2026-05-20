@@ -49,7 +49,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Основное"
+                        android:text="Settings"
                         android:textColor="#000000"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -65,7 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:gravity="center_vertical"
-                        android:text="Очистить кэш и историю"
+                        android:text="Clear cache"
                         android:textColor="#007AFF"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -87,7 +87,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Версия приложения"
+                        android:text="Settings"
                         android:textColor="#8E8E93"
                         android:textSize="14sp" />
 
@@ -95,10 +95,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="DubliBrowse v1.0"
+                        android:text="DubliBrowse v1.3"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:textStyle="銘bold" />
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
