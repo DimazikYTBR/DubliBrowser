@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F7"> <com.google.android.material.appbar.AppBarLayout
+    android:background="#F2F2F7"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +52,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Settings"
+                        android:text="General"
                         android:textColor="#000000"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -65,7 +68,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:gravity="center_vertical"
-                        android:text="Clear cache"
+                        android:text="Clear cache and history"
                         android:textColor="#007AFF"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -87,7 +90,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Settings"
+                        android:text="App Version"
                         android:textColor="#8E8E93"
                         android:textSize="14sp" />
 
@@ -95,7 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="DubliBrowse v1.3"
+                        android:text="1.3 (fix (24))"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -103,6 +106,6 @@
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
-    </core.widgets.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
