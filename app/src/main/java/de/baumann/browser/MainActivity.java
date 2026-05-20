@@ -6,6 +6,7 @@ import android.graphics.Shader;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -13,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnForward;
     private ImageButton btnRefresh;
     private ImageButton btnMenu;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +83,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final android.app.Dialog dialog = new android.app.Dialog(MainActivity.this, android.R.style.Theme_Material_NoActionBar_Fullscreen);
-
                 dialog.setContentView(R.layout.activity_settings);
 
+                View dialogRoot = dialog.findViewById(R.id.appBarLayout).getRootView();
+                View appBarLayout = dialog.findViewById(R.id.appBarLayout);
+                View contentFrame = dialog.findViewById(R.id.content_frame);
                 androidx.appcompat.widget.Toolbar settingsToolbar = dialog.findViewById(R.id.toolbar);
+
+                androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(dialogRoot, (view, windowInsets) -> {
+                    androidx.core.graphics.Insets insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+
+                    appBarLayout.setPadding(0, insets.top, 0, 0);
+
+                    contentFrame.setPadding(
+                        contentFrame.getPaddingLeft(),
+                        contentFrame.getPaddingTop(),
+                        contentFrame.getPaddingRight(),
+                        insets.bottom
+                    );
+            
+                    return windowInsets;
+                });
+
                 if (settingsToolbar != null) {
                     settingsToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                         @Override
@@ -102,6 +123,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 webView.reload();
             }
+        });
+
+        View bottomBarContainer = findViewById(R.id.bottom_bar_container);
+        
+        ViewCompat.setOnApplyWindowInsetsListener(bottomBarContainer, (v, windowInsets) -> {
+            Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+
+            float density = v.getResources().getDisplayMetrics().density;
+            int desiredMarginInPx = (int) (20 * density); 
+            
+            mlp.bottomMargin = systemBarsInsets.bottom + desiredMarginInPx;
+            v.setLayoutParams(mlp);
+            
+            return windowInsets;
         });
 
         float density = getResources().getDisplayMetrics().density;

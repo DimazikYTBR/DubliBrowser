@@ -3,47 +3,106 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F7"
-    android:fitsSystemWindows="true">
-
-    <com.google.android.material.appbar.AppBarLayout
+    android:background="#F2F2F7"> <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D1D1D6"
-        android:backgroundTint="#E5E5EA"
+        android:background="@android:color/transparent"
         app:elevation="0dp">
 
-    <com.google.android.material.appbar.CollapsingToolbarLayout
-        android:id="@+id/collapsing_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        app:collapsedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:expandedTitleMarginBottom="16dp"
-        app:expandedTitleMarginStart="20dp"
-        app:expandedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        app:title="Settings"
-        app:titleCollapseMode="fade"
-        app:collapsedTitleGravity="center"> 
-    
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_collapseMode="pin"
-        app:navigationIcon="@drawable/ic_menu_back" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            app:navigationIcon="@drawable/ic_menu_back"
+            app:title="Settings"
+            app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:titleTextColor="#000000" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <core.widgets.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Основное"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="12dp"
+                        android:background="#E5E5EA" />
+
+                    <TextView
+                        android:id="@+id/btn_clear_cache"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:gravity="center_vertical"
+                        android:text="Очистить кэш и историю"
+                        android:textColor="#007AFF"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Версия приложения"
+                        android:textColor="#8E8E93"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="DubliBrowse v1.0"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="銘bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </core.widgets.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
