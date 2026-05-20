@@ -59,6 +59,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        urlInput.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE 
+                    || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO
+                    || event != null && event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER) {
+                
+                String url = urlInput.getText().toString().trim();
+                
+                if (!url.isEmpty()) {
+                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                        url = "https://" + url;
+                    }
+
+                    webView.loadUrl(url);
+
+                    v.clearFocus();
+                    android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
+                }
+                return true;
+            }
+            return false;
+        });
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             
             return windowInsets;
         });
-        
+
         float density = getResources().getDisplayMetrics().density;
         int paddingInPx = (int) (80 * density);
     }
