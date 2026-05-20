@@ -9,59 +9,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:paddingBottom="80dp"
-        android:clipToPadding="false" />
+        android:layout_above="@+id/bottom_bar_container" />
 
     <LinearLayout
+        android:id="@+id/bottom_bar_container"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_nav"
+            android:id="@+id/card_nav_back"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="6dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="0"
             app:cardBackgroundColor="#F2F2F7"
-            android:layout_marginRight="8dp">
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:gravity="center">
+                android:paddingRight="4dp">
 
                 <ImageButton
                     android:id="@+id/btnBack"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_menu_back"
-                    android:scaleType="fitCenter"
+                    android:contentDescription="Back"
                     android:padding="11dp"
-                    android:contentDescription="Back" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_menu_back" />
 
                 <ImageButton
                     android:id="@+id/btnForward"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_menu_forward"
-                    android:scaleType="fitCenter"
+                    android:contentDescription="Forward"
                     android:padding="11dp"
-                    android:visibility="gone"
-                    android:contentDescription="Forward" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_menu_forward"
+                    android:visibility="gone" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -69,78 +67,79 @@
             android:id="@+id/card_search"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="6dp"
             app:cardBackgroundColor="#F2F2F7"
-            android:layout_marginRight="8dp">
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp">
+                android:paddingRight="12dp"
+                android:descendantFocusability="beforeDescendants">
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:src="@drawable/ic_menu_search"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_menu_search" />
 
                 <EditText
                     android:id="@+id/urlInput"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
+                    android:gravity="center_vertical"
                     android:hint="Search or type URL"
                     android:inputType="textUri"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="#8E8E93"
-                    android:textSize="14sp"
-                    android:gravity="center_vertical" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_nav"
+            android:id="@+id/card_nav_menu"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="6dp"
+            android:layout_weight="0"
             app:cardBackgroundColor="#F2F2F7"
-            android:layout_marginRight="8dp">
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:gravity="center">
+                android:paddingRight="4dp">
 
-            <ImageButton
-                android:id="@+id/btn_refresh"
-                                    android:layout_width="40dp"
+                <ImageButton
+                    android:id="@+id/btn_refresh"
+                    android:layout_width="40dp"
                     android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_menu_refresh"
-                android:scaleType="fitCenter"
-                android:padding="12dp"
-                android:contentDescription="Refresh" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Refresh"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_menu_refresh" />
 
-            <ImageButton
-                android:id="@+id/btn_menu"
-                                    android:layout_width="40dp"
+                <ImageButton
+                    android:id="@+id/btn_menu"
+                    android:layout_width="40dp"
                     android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_menu"
-                android:scaleType="fitCenter"
-                android:padding="12dp"
-                android:contentDescription="Menu" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Menu"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_menu" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

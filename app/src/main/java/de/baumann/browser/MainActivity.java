@@ -74,6 +74,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton btnMenu = findViewById(R.id.btn_menu);
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final android.app.Dialog dialog = new android.app.Dialog(MainActivity.this, android.R.style.Theme_Material_NoActionBar_Fullscreen);
+
+                dialog.setContentView(R.layout.activity_settings);
+
+                androidx.appcompat.widget.Toolbar settingsToolbar = dialog.findViewById(R.id.toolbar);
+                if (settingsToolbar != null) {
+                    settingsToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+
+                dialog.show();
+            }
+        });
+
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
