@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnForward;
     private ImageButton btnRefresh;
     private ImageButton btnMenu;
+    private View customSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,46 +103,43 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMenu = findViewById(R.id.btn_menu);
+btnMenu.setOnClickListener(v -> {
+    final android.app.Dialog dialog = new android.app.Dialog(MainActivity.this, android.R.style.Theme_Material_NoActionBar_Fullscreen);
+    dialog.setContentView(R.layout.activity_settings);
 
-        btnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final android.app.Dialog dialog = new android.app.Dialog(MainActivity.this, android.R.style.Theme_Material_NoActionBar_Fullscreen);
-                dialog.setContentView(R.layout.activity_settings);
+    View dialogRoot = dialog.findViewById(R.id.appBarLayout).getRootView();
+    View appBarLayout = dialog.findViewById(R.id.appBarLayout);
+    View contentFrame = dialog.findViewById(R.id.content_frame);
+    androidx.appcompat.widget.Toolbar settingsToolbar = dialog.findViewById(R.id.toolbar);
+    View customSwitch = dialog.findViewById(R.id.customSwitch);
+    View thumb = dialog.findViewById(R.id.switchThumb);
 
-                View dialogRoot = dialog.findViewById(R.id.appBarLayout).getRootView();
-                View appBarLayout = dialog.findViewById(R.id.appBarLayout);
-                View contentFrame = dialog.findViewById(R.id.content_frame);
-                androidx.appcompat.widget.Toolbar settingsToolbar = dialog.findViewById(R.id.toolbar);
+    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(dialogRoot, (view, windowInsets) -> {
+        androidx.core.graphics.Insets insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+        appBarLayout.setPadding(0, insets.top, 0, 0);
+        contentFrame.setPadding(contentFrame.getPaddingLeft(), contentFrame.getPaddingTop(), contentFrame.getPaddingRight(), insets.bottom);
+        return windowInsets;
+    });
 
-                androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(dialogRoot, (view, windowInsets) -> {
-                    androidx.core.graphics.Insets insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+    float density = getResources().getDisplayMetrics().density;
+    int thumbMove = (int) (18 * density);
 
-                    appBarLayout.setPadding(0, insets.top, 0, 0);
+    customSwitch.setActivated(webView.getSettings().getJavaScriptEnabled());
+    thumb.setTranslationX(customSwitch.isActivated() ? thumbMove : 0);
 
-                    contentFrame.setPadding(
-                        contentFrame.getPaddingLeft(),
-                        contentFrame.getPaddingTop(),
-                        contentFrame.getPaddingRight(),
-                        insets.bottom
-                    );
-            
-                    return windowInsets;
-                });
+    customSwitch.setOnClickListener(view -> {
+        boolean newState = !customSwitch.isActivated();
+        customSwitch.setActivated(newState);
+        thumb.animate().translationX(newState ? thumbMove : 0).setDuration(250).start();
+        webView.getSettings().setJavaScriptEnabled(newState);
+    });
 
-                if (settingsToolbar != null) {
-                    settingsToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                }
+    if (settingsToolbar != null) {
+        settingsToolbar.setNavigationOnClickListener(backView -> dialog.dismiss());
+    }
 
-                dialog.show();
-            }
-        });
+    dialog.show();
+});
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
