@@ -74,7 +74,7 @@
                         android:padding="2dp">
 
                         <View
-                            android:id="@+id/theme_thumb"
+                            android:id="@+id/thumb"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:background="@drawable/track_shape" />

@@ -112,7 +112,14 @@ btnMenu.setOnClickListener(v -> {
     View contentFrame = dialog.findViewById(R.id.content_frame);
     androidx.appcompat.widget.Toolbar settingsToolbar = dialog.findViewById(R.id.toolbar);
     View customSwitch = dialog.findViewById(R.id.theme_switch);
-    View thumb = dialog.findViewById(R.id.theme_thumb);
+    View thumb = dialog.findViewById(R.id.thumb);
+
+    if (customSwitch == null) {
+        android.util.Log.e("DEBUG_SETTINGS", "Ошибка: theme_switch не найден!");
+    }
+    if (thumb == null) {
+        android.util.Log.e("DEBUG_SETTINGS", "Ошибка: thumb не найден!");
+    }
 
     androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(dialogRoot, (view, windowInsets) -> {
         androidx.core.graphics.Insets insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
