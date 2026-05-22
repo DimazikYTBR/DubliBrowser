@@ -40,9 +40,50 @@ public class MainActivity extends AppCompatActivity {
         btnRefresh = findViewById(R.id.btn_refresh);
         btnMenu = findViewById(R.id.btn_menu);
 
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setDomStorageEnabled(true);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setAllowFileAccess(true);
+        settings.setAllowContentAccess(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setHorizontalScrollBarEnabled(false);
+
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        webView.setScrollbarFadingEnabled(true);
+
+        webView.setWebViewClient(new WebViewClient() {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                urlInput.setText(url);
+
+                btnForward.setVisibility(view.canGoForward() ? View.VISIBLE : View.GONE);
+
+                btnBack.setVisibility(view.canGoBack() ? View.VISIBLE : View.GONE);
+            }
+        });
+
+
+        webView.setOnLongClickListener(v -> {
+            WebView.HitTestResult result = webView.getHitTestResult();
+            if (result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE || 
+                result.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                showCustomContextMenu(result.getExtra());
+                return true;
+            }
+            return false;
+        });
 
         webView.loadUrl("https://google.com");
 
@@ -84,6 +125,31 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             return false;
+        });
+
+        final android.view.GestureDetector gestureDetector = new android.view.GestureDetector(this, new android.view.GestureDetector.SimpleOnGestureListener() {
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+            @Override
+            public boolean onFling(android.view.MotionEvent e1, android.view.MotionEvent e2, float velocityX, float velocityY) {
+                float diffX = e2.getX() - e1.getX();
+        
+                if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0) {
+                        if (webView.canGoBack()) webView.goBack();
+                    } else {
+                        if (webView.canGoForward()) webView.goForward();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        urlInput.setOnTouchListener((v, event) -> {
+            gestureDetector.onTouchEvent(event);
+            return true;
         });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -180,5 +246,31 @@ btnMenu.setOnClickListener(v -> {
 
         float density = getResources().getDisplayMetrics().density;
         int paddingInPx = (int) (80 * density);
+    }
+
+    private void showCustomContextMenu(String url) {
+        final android.app.Dialog dialog = new android.app.Dialog(MainActivity.this);
+
+        dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_context_menu);
+
+        TextView tvUrl = dialog.findViewById(R.id.tv_url);
+        TextView btnCopy = dialog.findViewById(R.id.btn_copy);
+        TextView btnOpen = dialog.findViewById(R.id.btn_open);
+
+        tvUrl.setText(url);
+
+        btnCopy.setOnClickListener(v -> {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(android.content.ClipData.newPlainText("URL", url));
+            dialog.dismiss();
+        });
+
+        btnOpen.setOnClickListener(v -> {
+            webView.loadUrl(url);
+            dialog.dismiss();
+        });
+
+        dialog.show();
     }
 }
