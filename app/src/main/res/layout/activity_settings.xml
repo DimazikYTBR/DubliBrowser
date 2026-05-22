@@ -51,36 +51,35 @@
                 app:cardCornerRadius="14dp"
                 app:cardElevation="0dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="12dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="12dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Dark Mode"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Dark Mode"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
 
-            <FrameLayout
-                android:id="@+id/switch"
-                android:layout_width="42dp"
-                android:layout_height="26dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/track_shape"
-                android:padding="2dp">
+                    <FrameLayout
+                        android:id="@+id/switch"
+                        android:layout_width="42dp"
+                        android:layout_height="26dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/track_shape"
+                        android:padding="2dp">
 
-                <View
-                    android:id="@+id/thumb"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:background="@drawable/track_shape" />
-            </FrameLayout>
-        </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+                        <View
+                            android:id="@+id/thumb"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:background="@drawable/track_shape" />
+                    </FrameLayout>
+                </RelativeLayout> </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
