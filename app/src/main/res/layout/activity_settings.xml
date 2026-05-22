@@ -77,7 +77,7 @@
                     android:id="@+id/thumbDarkMode"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:background="@drawable/track" />
+                    android:background="@drawable/track_shape" />
             </FrameLayout>
         </RelativeLayout>
             </androidx.cardview.widget.CardView>
