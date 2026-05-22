@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnForward = findViewById(R.id.btnForward);
         btnRefresh = findViewById(R.id.btn_refresh);
+        btnRefresh = findViewById(R.id.btn_menu);
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
