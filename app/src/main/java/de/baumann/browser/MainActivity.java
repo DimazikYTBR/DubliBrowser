@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
@@ -29,6 +30,25 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnMenu;
     private View customSwitch;
 
+    private boolean isCapsuleLocked = true;
+
+    private void toggleCapsule() {
+        isCapsuleLocked = !isCapsuleLocked;
+
+        urlInput.setEnabled(!isCapsuleLocked);
+        urlInput.setFocusableInTouchMode(!isCapsuleLocked);
+        urlInput.setAlpha(isCapsuleLocked ? 0.5f : 1.0f);
+        if (!isCapsuleLocked) {
+            urlInput.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.showSoftInput(urlInput, InputMethodManager.SHOW_IMPLICIT);
+        } else {
+            urlInput.clearFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(urlInput.getWindowToken(), 0);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
         btnForward = findViewById(R.id.btnForward);
         btnRefresh = findViewById(R.id.btn_refresh);
         btnMenu = findViewById(R.id.btn_menu);
+
+        urlInput.setEnabled(false);
+        urlInput.setFocusableInTouchMode(false);
+        urlInput.setAlpha(0.5f);
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -106,10 +130,10 @@ public class MainActivity extends AppCompatActivity {
         urlInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE 
                     || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO
-                    || event != null && event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER) {
-                
+                    || (event != null && event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER)) {
+        
                 String url = urlInput.getText().toString().trim();
-                
+        
                 if (!url.isEmpty()) {
                     if (!url.startsWith("http://") && !url.startsWith("https://")) {
                         url = "https://" + url;
@@ -117,11 +141,9 @@ public class MainActivity extends AppCompatActivity {
 
                     webView.loadUrl(url);
 
+                    toggleCapsule(); 
+
                     v.clearFocus();
-                    android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    if (imm != null) {
-                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    }
                 }
                 return true;
             }
@@ -169,6 +191,12 @@ public class MainActivity extends AppCompatActivity {
                     webView.goForward();
                 }
             }
+        });
+
+        ImageView btnUnlock = findViewById(R.id.btn_unlock);
+
+        btnUnlock.setOnClickListener(v -> {
+            toggleCapsule();
         });
 
 btnMenu.setOnClickListener(v -> {
