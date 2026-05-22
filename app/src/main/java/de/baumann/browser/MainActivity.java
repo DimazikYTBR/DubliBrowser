@@ -259,18 +259,11 @@ btnMenu.setOnClickListener(v -> {
 
             ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
             float density = v.getResources().getDisplayMetrics().density;
-            int desiredMarginInPx = (int) (20 * density); 
-            mlp.bottomMargin = systemBarsInsets.bottom + desiredMarginInPx;
+            mlp.bottomMargin = systemBarsInsets.bottom + (int) (20 * density);
             v.setLayoutParams(mlp);
 
-            int paddingBottomInPx = (int) (80 * density);
-            webView.setPadding(
-                webView.getPaddingLeft(),
-                systemBarsInsets.top,
-                webView.getPaddingRight(),
-                paddingBottomInPx
-            );
-            
+            webView.setPadding(0, systemBarsInsets.top, 0, (int) (80 * density));
+    
             return windowInsets;
         });
 

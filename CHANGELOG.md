@@ -1,3 +1,9 @@
+# v 1.5.2 - 2026-05-22
+- **optimization:** improved dynamic padding and margin management for diverse navigation styles (gesture-based and button-based)
+- **fix:** resolved status bar overlay issues; content now respects system window insets correctly
+- **feat:** introduced a 10% opacity (glassmorphism effect) to the navigation bar for a modern, floating interface
+- **refactor:** optimized bottom_bar_container for seamless edge-to-edge UI integration
+
 # v 1.5.1 - 2026-05-22
 - **fix:** URL Capsule interaction logic (state management between locked/unlocked)
 - **fix:** automatic keyboard management upon capsule state change
