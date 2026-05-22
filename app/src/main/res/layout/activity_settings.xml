@@ -65,7 +65,7 @@
                         android:textSize="16sp" />
 
                     <FrameLayout
-                        android:id="@+id/switch"
+                        android:id="@+id/theme_switch"
                         android:layout_width="42dp"
                         android:layout_height="26dp"
                         android:layout_alignParentRight="true"
@@ -74,7 +74,7 @@
                         android:padding="2dp">
 
                         <View
-                            android:id="@+id/thumb"
+                            android:id="@+id/theme_thumb"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:background="@drawable/track_shape" />
