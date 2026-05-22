@@ -111,8 +111,8 @@ btnMenu.setOnClickListener(v -> {
     View appBarLayout = dialog.findViewById(R.id.appBarLayout);
     View contentFrame = dialog.findViewById(R.id.content_frame);
     androidx.appcompat.widget.Toolbar settingsToolbar = dialog.findViewById(R.id.toolbar);
-    View customSwitch = dialog.findViewById(R.id.customSwitch);
-    View thumb = dialog.findViewById(R.id.switchThumb);
+    View customSwitch = dialog.findViewById(R.id.switch);
+    View thumb = dialog.findViewById(R.id.thumb);
 
     androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(dialogRoot, (view, windowInsets) -> {
         androidx.core.graphics.Insets insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
