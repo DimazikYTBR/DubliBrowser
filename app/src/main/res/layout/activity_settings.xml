@@ -65,7 +65,7 @@
                 android:textSize="16sp" />
 
             <FrameLayout
-                android:id="@+id/switchDarkMode"
+                android:id="@+id/switch"
                 android:layout_width="42dp"
                 android:layout_height="26dp"
                 android:layout_alignParentRight="true"
@@ -74,7 +74,7 @@
                 android:padding="2dp">
 
                 <View
-                    android:id="@+id/thumbDarkMode"
+                    android:id="@+id/thumb"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:background="@drawable/track_shape" />
