@@ -34,15 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean isCapsuleLocked = true;
 
     private void toggleCapsule() {
-        isCapsuleLocked = !isCapsuleLocked;
-
-        urlInput.setEnabled(!isCapsuleLocked);
-        urlInput.setFocusableInTouchMode(!isCapsuleLocked);
-        urlInput.setAlpha(isCapsuleLocked ? 0.5f : 1.0f);
-        if (!isCapsuleLocked) {
-            urlInput.requestFocus();
-
-            private void toggleCapsule() {
     isCapsuleLocked = !isCapsuleLocked;
 
     urlInput.setEnabled(!isCapsuleLocked);
@@ -50,9 +41,7 @@ public class MainActivity extends AppCompatActivity {
     urlInput.setAlpha(isCapsuleLocked ? 0.5f : 1.0f);
     
     if (!isCapsuleLocked) {
-        urlInput.requestFocus();
-        
-        // Переносим курсор в конец текста
+        urlInput.requestFocus()
         urlInput.setSelection(urlInput.getText().length());
         
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
