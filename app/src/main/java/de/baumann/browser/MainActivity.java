@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
 public void onPageFinished(WebView view, String url) {
     super.onPageFinished(view, url);
     urlInput.setText(url);
- блекнет, если назад нельзя
     btnBack.setVisibility(View.VISIBLE);
     btnBack.setAlpha(view.canGoBack() ? 1.0f : 0.3f);
     btnBack.setEnabled(view.canGoBack());
