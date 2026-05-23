@@ -41,6 +41,29 @@ public class MainActivity extends AppCompatActivity {
         urlInput.setAlpha(isCapsuleLocked ? 0.5f : 1.0f);
         if (!isCapsuleLocked) {
             urlInput.requestFocus();
+
+            private void toggleCapsule() {
+    isCapsuleLocked = !isCapsuleLocked;
+
+    urlInput.setEnabled(!isCapsuleLocked);
+    urlInput.setFocusableInTouchMode(!isCapsuleLocked);
+    urlInput.setAlpha(isCapsuleLocked ? 0.5f : 1.0f);
+    
+    if (!isCapsuleLocked) {
+        urlInput.requestFocus();
+        
+        // Переносим курсор в конец текста
+        urlInput.setSelection(urlInput.getText().length());
+        
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.showSoftInput(urlInput, InputMethodManager.SHOW_IMPLICIT);
+    } else {
+        urlInput.clearFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(urlInput.getWindowToken(), 0);
+    }
+}
+
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.showSoftInput(urlInput, InputMethodManager.SHOW_IMPLICIT);
         } else {
