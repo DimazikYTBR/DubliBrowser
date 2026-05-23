@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isCapsuleLocked = true;
 
-    // ИСПРАВЛЕНО: Чистый метод без синтаксических ошибок и с точкой с запятой
     private void toggleCapsule() {
         isCapsuleLocked = !isCapsuleLocked;
 
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(true);
 
-        // ИСПРАВЛЕНО: Все события WebView объединены в ОДИН клиент
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -97,12 +95,16 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                urlInput.setText(url);
-                btnForward.setVisibility(view.canGoForward() ? View.VISIBLE : View.GONE);
-                btnBack.setVisibility(view.canGoBack() ? View.VISIBLE : View.GONE);
-            }
+public void onPageFinished(WebView view, String url) {
+    super.onPageFinished(view, url);
+    urlInput.setText(url);
+ блекнет, если назад нельзя
+    btnBack.setVisibility(View.VISIBLE);
+    btnBack.setAlpha(view.canGoBack() ? 1.0f : 0.3f);
+    btnBack.setEnabled(view.canGoBack());
+    btnForward.setVisibility(view.canGoForward() ? View.VISIBLE : View.GONE);
+}
+
         });
 
         webView.setOnLongClickListener(v -> {
