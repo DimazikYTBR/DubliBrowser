@@ -33,32 +33,27 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isCapsuleLocked = true;
 
+    // ИСПРАВЛЕНО: Чистый метод без синтаксических ошибок и с точкой с запятой
     private void toggleCapsule() {
-    isCapsuleLocked = !isCapsuleLocked;
+        isCapsuleLocked = !isCapsuleLocked;
 
-    urlInput.setEnabled(!isCapsuleLocked);
-    urlInput.setFocusableInTouchMode(!isCapsuleLocked);
-    urlInput.setAlpha(isCapsuleLocked ? 0.5f : 1.0f);
-    
-    if (!isCapsuleLocked) {
-        urlInput.requestFocus()
-        urlInput.setSelection(urlInput.getText().length());
+        urlInput.setEnabled(!isCapsuleLocked);
+        urlInput.setFocusableInTouchMode(!isCapsuleLocked);
+        urlInput.setAlpha(isCapsuleLocked ? 0.5f : 1.0f);
         
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        imm.showSoftInput(urlInput, InputMethodManager.SHOW_IMPLICIT);
-    } else {
-        urlInput.clearFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(urlInput.getWindowToken(), 0);
-    }
-}
-
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.showSoftInput(urlInput, InputMethodManager.SHOW_IMPLICIT);
+        
+        if (!isCapsuleLocked) {
+            urlInput.requestFocus(); // Была пропущена ";"
+            urlInput.setSelection(urlInput.getText().length());
+            if (imm != null) {
+                imm.showSoftInput(urlInput, InputMethodManager.SHOW_IMPLICIT);
+            }
         } else {
             urlInput.clearFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(urlInput.getWindowToken(), 0);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(urlInput.getWindowToken(), 0);
+            }
         }
     }
 
@@ -90,13 +85,13 @@ public class MainActivity extends AppCompatActivity {
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.setVerticalScrollBarEnabled(false);
         webView.setHorizontalScrollBarEnabled(false);
-
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(true);
 
+        // ИСПРАВЛЕНО: Все события WebView объединены в ОДИН клиент
         webView.setWebViewClient(new WebViewClient() {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
             }
@@ -105,13 +100,10 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 urlInput.setText(url);
-
                 btnForward.setVisibility(view.canGoForward() ? View.VISIBLE : View.GONE);
-
                 btnBack.setVisibility(view.canGoBack() ? View.VISIBLE : View.GONE);
             }
         });
-
 
         webView.setOnLongClickListener(v -> {
             WebView.HitTestResult result = webView.getHitTestResult();
@@ -125,21 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl("https://google.com");
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-
-                urlInput.setText(url);
-
-                if (view.canGoForward()) {
-                    btnForward.setVisibility(View.VISIBLE);
-                } else {
-                    btnForward.setVisibility(View.GONE);
-                }
-            }
-        });
-
         urlInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE 
                     || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO
@@ -151,11 +128,8 @@ public class MainActivity extends AppCompatActivity {
                     if (!url.startsWith("http://") && !url.startsWith("https://")) {
                         url = "https://" + url;
                     }
-
                     webView.loadUrl(url);
-
                     toggleCapsule(); 
-
                     v.clearFocus();
                 }
                 return true;
@@ -188,123 +162,112 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (webView.canGoBack()) {
-                    webView.goBack();
-                }
+        btnBack.setOnClickListener(v -> {
+            if (webView.canGoBack()) {
+                webView.goBack();
             }
         });
 
-        btnForward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (webView.canGoForward()) {
-                    webView.goForward();
-                }
+        btnForward.setOnClickListener(v -> {
+            if (webView.canGoForward()) {
+                webView.goForward();
             }
         });
 
         ImageView btnUnlock = findViewById(R.id.btn_unlock);
+        if (btnUnlock != null) {
+            btnUnlock.setOnClickListener(v -> toggleCapsule());
+        }
 
-        btnUnlock.setOnClickListener(v -> {
-            toggleCapsule();
-        });
+        btnMenu.setOnClickListener(v -> {
+            final android.app.Dialog dialog = new android.app.Dialog(MainActivity.this, android.R.style.Theme_Material_NoActionBar_Fullscreen);
+            dialog.setContentView(R.layout.activity_settings);
 
-btnMenu.setOnClickListener(v -> {
-    final android.app.Dialog dialog = new android.app.Dialog(MainActivity.this, android.R.style.Theme_Material_NoActionBar_Fullscreen);
-    dialog.setContentView(R.layout.activity_settings);
+            View dialogRoot = dialog.findViewById(R.id.appBarLayout).getRootView();
+            View appBarLayout = dialog.findViewById(R.id.appBarLayout);
+            View contentFrame = dialog.findViewById(R.id.content_frame);
+            androidx.appcompat.widget.Toolbar settingsToolbar = dialog.findViewById(R.id.toolbar);
+            View themeSwitch = dialog.findViewById(R.id.theme_switch);
+            View thumb = dialog.findViewById(R.id.thumb);
 
-    View dialogRoot = dialog.findViewById(R.id.appBarLayout).getRootView();
-    View appBarLayout = dialog.findViewById(R.id.appBarLayout);
-    View contentFrame = dialog.findViewById(R.id.content_frame);
-    androidx.appcompat.widget.Toolbar settingsToolbar = dialog.findViewById(R.id.toolbar);
-    View customSwitch = dialog.findViewById(R.id.theme_switch);
-    View thumb = dialog.findViewById(R.id.thumb);
+            androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(dialogRoot, (view, windowInsets) -> {
+                androidx.core.graphics.Insets insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                if (appBarLayout != null) appBarLayout.setPadding(0, insets.top, 0, 0);
+                if (contentFrame != null) contentFrame.setPadding(contentFrame.getPaddingLeft(), contentFrame.getPaddingTop(), contentFrame.getPaddingRight(), insets.bottom);
+                return windowInsets;
+            });
 
-    if (customSwitch == null) {
-        android.util.Log.e("DEBUG_SETTINGS", "Ошибка: theme_switch не найден!");
-    }
-    if (thumb == null) {
-        android.util.Log.e("DEBUG_SETTINGS", "Ошибка: thumb не найден!");
-    }
+            // Защита от NullPointerException
+            if (themeSwitch != null && thumb != null) {
+                float density1 = getResources().getDisplayMetrics().density;
+                int thumbMove = (int) (18 * density1);
 
-    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(dialogRoot, (view, windowInsets) -> {
-        androidx.core.graphics.Insets insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
-        appBarLayout.setPadding(0, insets.top, 0, 0);
-        contentFrame.setPadding(contentFrame.getPaddingLeft(), contentFrame.getPaddingTop(), contentFrame.getPaddingRight(), insets.bottom);
-        return windowInsets;
-    });
+                themeSwitch.setActivated(webView.getSettings().getJavaScriptEnabled());
+                thumb.setTranslationX(themeSwitch.isActivated() ? thumbMove : 0);
 
-    float density = getResources().getDisplayMetrics().density;
-    int thumbMove = (int) (18 * density);
-
-    customSwitch.setActivated(webView.getSettings().getJavaScriptEnabled());
-    thumb.setTranslationX(customSwitch.isActivated() ? thumbMove : 0);
-
-    customSwitch.setOnClickListener(view -> {
-        boolean newState = !customSwitch.isActivated();
-        customSwitch.setActivated(newState);
-        thumb.animate().translationX(newState ? thumbMove : 0).setDuration(250).start();
-        webView.getSettings().setJavaScriptEnabled(newState);
-    });
-
-    if (settingsToolbar != null) {
-        settingsToolbar.setNavigationOnClickListener(backView -> dialog.dismiss());
-    }
-
-    dialog.show();
-});
-
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                webView.reload();
+                themeSwitch.setOnClickListener(view -> {
+                    boolean newState = !themeSwitch.isActivated();
+                    themeSwitch.setActivated(newState);
+                    thumb.animate().translationX(newState ? thumbMove : 0).setDuration(250).start();
+                    webView.getSettings().setJavaScriptEnabled(newState);
+                });
             }
+
+            if (settingsToolbar != null) {
+                settingsToolbar.setNavigationOnClickListener(backView -> dialog.dismiss());
+            }
+
+            dialog.show();
         });
+
+        btnRefresh.setOnClickListener(v -> webView.reload());
 
         View bottomBarContainer = findViewById(R.id.bottom_bar_container);
+        if (bottomBarContainer != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(bottomBarContainer, (v, windowInsets) -> {
+                Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
 
-        ViewCompat.setOnApplyWindowInsetsListener(bottomBarContainer, (v, windowInsets) -> {
-            Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+                float density2 = v.getResources().getDisplayMetrics().density;
+                mlp.bottomMargin = systemBarsInsets.bottom + (int) (20 * density2);
+                v.setLayoutParams(mlp);
 
-            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            float density = v.getResources().getDisplayMetrics().density;
-            mlp.bottomMargin = systemBarsInsets.bottom + (int) (20 * density);
-            v.setLayoutParams(mlp);
-
-            webView.setPadding(0, systemBarsInsets.top, 0, (int) (80 * density));
-    
-            return windowInsets;
-        });
-
-        float density = getResources().getDisplayMetrics().density;
-        int paddingInPx = (int) (80 * density);
+                webView.setPadding(0, systemBarsInsets.top, 0, (int) (80 * density2));
+        
+                return windowInsets;
+            });
+        }
     }
 
     private void showCustomContextMenu(String url) {
         final android.app.Dialog dialog = new android.app.Dialog(MainActivity.this);
-
-        dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
         dialog.setContentView(R.layout.dialog_context_menu);
 
         TextView tvUrl = dialog.findViewById(R.id.tv_url);
         TextView btnCopy = dialog.findViewById(R.id.btn_copy);
         TextView btnOpen = dialog.findViewById(R.id.btn_open);
 
-        tvUrl.setText(url);
+        if (tvUrl != null) tvUrl.setText(url);
 
-        btnCopy.setOnClickListener(v -> {
-            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            clipboard.setPrimaryClip(android.content.ClipData.newPlainText("URL", url));
-            dialog.dismiss();
-        });
+        if (btnCopy != null) {
+            btnCopy.setOnClickListener(v -> {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                if (clipboard != null) {
+                    clipboard.setPrimaryClip(android.content.ClipData.newPlainText("URL", url));
+                }
+                dialog.dismiss();
+            });
+        }
 
-        btnOpen.setOnClickListener(v -> {
-            webView.loadUrl(url);
-            dialog.dismiss();
-        });
+        if (btnOpen != null) {
+            btnOpen.setOnClickListener(v -> {
+                webView.loadUrl(url);
+                dialog.dismiss();
+            });
+        }
 
         dialog.show();
     }
