@@ -224,17 +224,27 @@ public void onPageFinished(WebView view, String url) {
         btnRefresh.setOnClickListener(v -> webView.reload());
 
         View bottomBarContainer = findViewById(R.id.bottom_bar_container);
+
         if (bottomBarContainer != null) {
             ViewCompat.setOnApplyWindowInsetsListener(bottomBarContainer, (v, windowInsets) -> {
                 Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                float density2 = v.getResources().getDisplayMetrics().density;
+
+                v.setPadding(
+                    v.getPaddingLeft(),
+                    v.getPaddingTop(),
+                    v.getPaddingRight(),
+                    systemBarsInsets.bottom + (int) (4 * density2) 
+                );
 
                 ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-                float density2 = v.getResources().getDisplayMetrics().density;
-                mlp.bottomMargin = systemBarsInsets.bottom + (int) (20 * density2);
+                mlp.bottomMargin = 0;
                 v.setLayoutParams(mlp);
 
-                webView.setPadding(0, systemBarsInsets.top, 0, (int) (80 * density2));
-        
+                if (webView != null) {
+                    webView.setPadding(0, systemBarsInsets.top, 0, (int) (55 * density2));
+                }
+
                 return windowInsets;
             });
         }
