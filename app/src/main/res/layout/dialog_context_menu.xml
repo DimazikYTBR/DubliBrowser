@@ -4,8 +4,7 @@
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     app:shapeAppearanceOverlay="@drawable/apple_style_shape"
-    app:cardElevation="0dp"
-    android:backgroundTint="#f5f5f5">
+    app:cardElevation="0dp" >
 
     <LinearLayout
         android:layout_width="match_parent"

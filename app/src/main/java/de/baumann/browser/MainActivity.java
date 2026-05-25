@@ -232,23 +232,18 @@ public class MainActivity extends AppCompatActivity {
         if (bottomBarContainer != null) {
             ViewCompat.setOnApplyWindowInsetsListener(bottomBarContainer, (v, windowInsets) -> {
                 Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-                float density2 = v.getResources().getDisplayMetrics().density;
 
-                v.setPadding(
-                    v.getPaddingLeft(),
-                    v.getPaddingTop(),
-                    v.getPaddingRight(),
-                    systemBarsInsets.bottom
-                );
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
 
-                ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-                mlp.bottomMargin = 0;
-                v.setLayoutParams(mlp);
+                params.bottomMargin = systemBarsInsets.bottom + 20;
+                params.leftMargin = 20;
+                params.rightMargin = 20;
+    
+                v.setLayoutParams(params);
 
                 if (webView != null) {
-                    webView.setPadding(0, systemBarsInsets.top, 0, (int) (55 * density2));
+                    webView.setPadding(0, systemBarsInsets.top, 0, 0);
                 }
-
                 return windowInsets;
             });
         }
