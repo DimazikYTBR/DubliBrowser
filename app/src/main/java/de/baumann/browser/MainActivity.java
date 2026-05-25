@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         viewModel = new androidx.lifecycle.ViewModelProvider(this).get(BrowserViewModel.class);
 
         viewModel.getCurrentUrl().observe(this, url -> {
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     v.getPaddingLeft(),
                     v.getPaddingTop(),
                     v.getPaddingRight(),
-                    systemBarsInsets.bottom + (int) (4 * density2) 
+                    systemBarsInsets.bottom + (int) (24 * density2) 
                 );
 
                 ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
