@@ -1,31 +1,56 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="280dp"
+<androidx.cardview.widget.CardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/menu_background"
-    android:padding="20dp">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp"
+    android:backgroundTint="#F2F2F2">
 
-    <TextView android:id="@+id/tv_url"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="The URL"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:paddingBottom="15dp"/>
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#000" />
+        <TextView 
+            android:id="@+id/tv_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Do you want to delete this Account?"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:paddingBottom="20dp"/>
 
-    <TextView android:id="@+id/btn_copy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Copy"
-        android:gravity="center"
-        android:padding="15dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-    <TextView android:id="@+id/btn_open"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Open"
-        android:gravity="center"
-        android:padding="15dp" />
-</LinearLayout>
+            <Button
+                android:id="@+id/btn_copy"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                android:text="Copy"
+                android:textAllCaps="false"
+                android:textColor="#E5E5E5"
+                android:backgroundTint="#007AFF" />
+
+            <Button
+                android:id="@+id/btn_open"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:text="Open"
+                android:textAllCaps="false"
+                android:textColor="#007AFF"
+                android:backgroundTint="#E5E5E5" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
