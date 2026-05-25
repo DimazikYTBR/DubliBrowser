@@ -20,6 +20,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import de.baumann.browser.DubliWebViewClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         
         if (!isCapsuleLocked) {
-            urlInput.requestFocus(); // Была пропущена ";"
+            urlInput.requestFocus();
             urlInput.setSelection(urlInput.getText().length());
             if (imm != null) {
                 imm.showSoftInput(urlInput, InputMethodManager.SHOW_IMPLICIT);
@@ -56,10 +57,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private BrowserViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        viewModel = new androidx.lifecycle.ViewModelProvider(this).get(BrowserViewModel.class);
+
+        viewModel.getCurrentUrl().observe(this, url -> {
+            if (!urlInput.getText().toString().equals(url)) {
+                urlInput.setText(url);
+            }   
+        });
 
         webView = findViewById(R.id.webView);
         urlInput = findViewById(R.id.urlInput);
@@ -87,24 +98,18 @@ public class MainActivity extends AppCompatActivity {
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(true);
 
-        webView.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new DubliWebViewClient(new DubliWebViewClient.WebViewClientCallback() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
+            public void onPageStarted(String url) {
             }
 
             @Override
-public void onPageFinished(WebView view, String url) {
-    super.onPageFinished(view, url);
-    urlInput.setText(url);
-    btnBack.setVisibility(View.VISIBLE);
-    btnBack.setAlpha(view.canGoBack() ? 1.0f : 0.3f);
-    btnBack.setEnabled(view.canGoBack());
-    btnForward.setVisibility(view.canGoForward() ? View.VISIBLE : View.GONE);
-}
-
-        });
+            public void onPageFinished(String url) {
+                urlInput.setText(url);
+                btnBack.setEnabled(webView.canGoBack());
+            btnForward.setVisibility(webView.canGoForward() ? View.VISIBLE : View.GONE);
+            }
+        }));
 
         webView.setOnLongClickListener(v -> {
             WebView.HitTestResult result = webView.getHitTestResult();
@@ -198,7 +203,6 @@ public void onPageFinished(WebView view, String url) {
                 return windowInsets;
             });
 
-            // Защита от NullPointerException
             if (themeSwitch != null && thumb != null) {
                 float density1 = getResources().getDisplayMetrics().density;
                 int thumbMove = (int) (18 * density1);
@@ -248,6 +252,18 @@ public void onPageFinished(WebView view, String url) {
                 return windowInsets;
             });
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (webView != null) {
+            webView.stopLoading();
+            webView.clearHistory();
+            webView.clearCache(true);
+            webView.destroy();
+            webView = null;
+        }
+        super.onDestroy();
     }
 
     private void showCustomContextMenu(String url) {
