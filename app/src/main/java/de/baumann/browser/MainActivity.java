@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     v.getPaddingLeft(),
                     v.getPaddingTop(),
                     v.getPaddingRight(),
-                    systemBarsInsets.bottom + (int) (24 * density2) 
+                    systemBarsInsets.bottom
                 );
 
                 ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
