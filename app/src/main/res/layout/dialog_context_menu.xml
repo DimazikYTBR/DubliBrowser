@@ -4,7 +4,7 @@
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     app:cardPreventCornerOverlap="false"
-    android:cardCornerRadius="32dp"
+    app:cardCornerRadius="32dp"
     app:cardBackgroundColor="#F2F2F7" >
 
     <LinearLayout
