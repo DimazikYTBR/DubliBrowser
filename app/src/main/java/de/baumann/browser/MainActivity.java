@@ -140,18 +140,30 @@ public class MainActivity extends androidx.activity.ComponentActivity {
             return false;
         });
 
-        webView.setWebViewClient(new DubliWebViewClient(new DubliWebViewClient.WebViewClientCallback() {
-            @Override
-            public void onPageStarted(String url) {
-                siteTitle.setText("Loading...");
+        webView.addJavascriptInterface(new Object() {
+            @android.webkit.JavascriptInterface
+            public void onButtonOverlapped(boolean isOverlapped) {
+                runOnUiThread(() -> {
+                    if (isOverlapped) {
+                        toggleCapsuleState(true);
+                    }
+                });
             }
+        }, "AndroidBridge");
 
+        webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageFinished(String url) {
-                String title = webView.getTitle();
-                siteTitle.setText((title != null && !title.isEmpty()) ? title : url);
+            public void onPageFinished(WebView view, String url) {
+                String js = "document.addEventListener('scroll', function() {" +
+                    "  var btn = document.getElementById('important-button');" + 
+                    "  var rect = btn.getBoundingClientRect();" +
+                    "  if (rect.bottom > (window.innerHeight - 150)) {" +
+                    "    AndroidBridge.onButtonOverlapped(true);" +
+                    "  }" +
+                    "});";
+                view.evaluateJavascript(js, null);
             }
-        }));
+        });
 
         webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > oldScrollY + 20 && !isMinimized) {
