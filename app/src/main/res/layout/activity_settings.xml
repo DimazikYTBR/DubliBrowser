@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="48dp"
             app:navigationIcon="@drawable/ic_menu_back">
 
             <TextView
@@ -105,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="1.4"
+                        android:text="1.5.4 beta"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />
