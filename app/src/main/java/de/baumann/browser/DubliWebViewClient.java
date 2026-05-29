@@ -3,6 +3,7 @@ package de.baumann.browser;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.graphics.Bitmap;
+import android.webkit.WebResourceRequest;
 
 public class DubliWebViewClient extends WebViewClient {
 
