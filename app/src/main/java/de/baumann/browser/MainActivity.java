@@ -95,7 +95,7 @@ public class MainActivity extends androidx.activity.ComponentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        siteTitle = capsuleInclude.findViewById(R.id.siteTitle);
+        siteTitle = findViewById(R.id.siteTitle);
 
         viewModel = new androidx.lifecycle.ViewModelProvider(this).get(BrowserViewModel.class);
 
