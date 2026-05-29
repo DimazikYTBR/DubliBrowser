@@ -124,14 +124,14 @@ public class MainActivity extends androidx.activity.ComponentActivity {
             }
         });
 
-        WebView.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false; 
             }
         });
 
-        WebView.loadUrl("https://www.google.com");
+        webView.loadUrl("https://www.google.com");
 
         urlInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE 
