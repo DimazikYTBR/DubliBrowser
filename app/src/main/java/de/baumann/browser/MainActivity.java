@@ -21,6 +21,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import de.baumann.browser.DubliWebViewClient;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.view.animation.DecelerateInterpolator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,19 +101,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setHorizontalScrollBarEnabled(false);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(true);
-
-        webView.setWebViewClient(new DubliWebViewClient(new DubliWebViewClient.WebViewClientCallback() {
-            @Override
-            public void onPageStarted(String url) {
-            }
-
-            @Override
-            public void onPageFinished(String url) {
-                urlInput.setText(url);
-                btnBack.setEnabled(webView.canGoBack());
-            btnForward.setVisibility(webView.canGoForward() ? View.VISIBLE : View.GONE);
-            }
-        }));
 
         webView.setOnLongClickListener(v -> {
             WebView.HitTestResult result = webView.getHitTestResult();
