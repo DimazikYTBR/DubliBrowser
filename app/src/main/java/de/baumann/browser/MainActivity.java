@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
     private EditText urlInput;
-    private ImageButton btnBack;
-    private ImageButton btnForward;
     private ImageButton btnRefresh;
     private ImageButton btnMenu;
     private View customSwitch;
@@ -57,6 +55,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isMinimized = false;
+
+    private void toggleCapsuleState(boolean minimize) {
+        if (isMinimized == minimize) return;
+        isMinimized = minimize;
+
+        final View container = findViewById(R.id.main_capsule_container);
+        final View btnRefresh = findViewById(R.id.btn_refresh);
+        final View btnMenu = findViewById(R.id.btn_menu);
+
+        int targetWidth = minimize ? (int) (160 * getResources().getDisplayMetrics().density) : ViewGroup.LayoutParams.MATCH_PARENT;
+    
+        ValueAnimator widthAnimator = ValueAnimator.ofInt(container.getWidth(), targetWidth);
+        widthAnimator.addUpdateListener(animation -> {
+            ViewGroup.LayoutParams params = container.getLayoutParams();
+            params.width = (int) animation.getAnimatedValue();
+            container.setLayoutParams(params);
+        });
+
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(btnRefresh, "alpha", minimize ? 0f : 1f);
+        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(btnMenu, "alpha", minimize ? 0f : 1f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(widthAnimator, alphaAnimator, alphaAnimator2);
+        animatorSet.setDuration(300);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+        animatorSet.start();
+    }
+
     private BrowserViewModel viewModel;
 
     @Override
@@ -74,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.webView);
         urlInput = findViewById(R.id.urlInput);
-        btnBack = findViewById(R.id.btnBack);
-        btnForward = findViewById(R.id.btnForward);
         btnRefresh = findViewById(R.id.btn_refresh);
         btnMenu = findViewById(R.id.btn_menu);
 
@@ -119,6 +144,20 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             return false;
+        });
+
+        private int lastScrollY = 0;
+        private final int SCROLL_THRESHOLD = 20;
+
+        webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            boolean isScrollingDown = scrollY > oldScrollY;
+
+            if (scrollY > 150 && !isMinimized && isScrollingDown) {
+                toggleCapsuleState(true);
+            } 
+            else if (scrollY < oldScrollY - SCROLL_THRESHOLD && isMinimized) {
+                toggleCapsuleState(false);
+            }
         });
 
         webView.loadUrl("https://google.com");
@@ -166,18 +205,6 @@ public class MainActivity extends AppCompatActivity {
         urlInput.setOnTouchListener((v, event) -> {
             gestureDetector.onTouchEvent(event);
             return true;
-        });
-
-        btnBack.setOnClickListener(v -> {
-            if (webView.canGoBack()) {
-                webView.goBack();
-            }
-        });
-
-        btnForward.setOnClickListener(v -> {
-            if (webView.canGoForward()) {
-                webView.goForward();
-            }
         });
 
         ImageView btnUnlock = findViewById(R.id.btn_unlock);
@@ -231,19 +258,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (bottomBarContainer != null) {
             ViewCompat.setOnApplyWindowInsetsListener(bottomBarContainer, (v, windowInsets) -> {
-                Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-
+                Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+        
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
 
-                params.bottomMargin = systemBarsInsets.bottom + 20;
-                params.leftMargin = 20;
-                params.rightMargin = 20;
-    
+                params.bottomMargin = systemBars.bottom + 16; 
+
+                params.leftMargin = 16;
+                params.rightMargin = 16;
+        
                 v.setLayoutParams(params);
 
                 if (webView != null) {
-                    webView.setPadding(0, systemBarsInsets.top, 0, 0);
+                    webView.setPadding(0, 0, 0, v.getHeight() + params.bottomMargin);
                 }
+        
                 return windowInsets;
             });
         }
