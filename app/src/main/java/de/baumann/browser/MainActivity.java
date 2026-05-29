@@ -27,6 +27,7 @@ import android.animation.ValueAnimator;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebViewClient;
 import android.view.animation.DecelerateInterpolator;
+import android.view.ViewStub;
 
 public class MainActivity extends androidx.activity.ComponentActivity {
 
@@ -36,6 +37,20 @@ public class MainActivity extends androidx.activity.ComponentActivity {
     private ImageButton btnMenu;
     private View customSwitch;
     private TextView siteTitle; 
+    private View miniCapsule = null;
+
+    private void showMiniCapsule() {
+    if (miniCapsule == null) {
+        ViewStub stub = findViewById(R.id.mini_capsule_stub);
+        miniCapsule = stub.inflate();
+    }
+
+    miniCapsule.setAlpha(0f);
+    miniCapsule.setVisibility(View.VISIBLE);
+    miniCapsule.animate().alpha(1f).setDuration(300).start();
+    
+    findViewById(R.id.main_capsule_container).animate().alpha(0f).setDuration(300).start();
+    }
 
     private boolean isCapsuleLocked = true;
 
@@ -74,6 +89,9 @@ public class MainActivity extends androidx.activity.ComponentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        View capsuleInclude = findViewById(R.id.capsule_include);
+        siteTitle = capsuleInclude.findViewById(R.id.siteTitle);
+
         viewModel = new androidx.lifecycle.ViewModelProvider(this).get(BrowserViewModel.class);
 
         viewModel.getCurrentUrl().observe(this, url -> {
@@ -86,7 +104,6 @@ public class MainActivity extends androidx.activity.ComponentActivity {
         urlInput = findViewById(R.id.urlInput);
         btnRefresh = findViewById(R.id.btn_refresh);
         btnMenu = findViewById(R.id.btn_menu);
-        siteTitle = findViewById(R.id.siteTitle);
 
         urlInput.setEnabled(false);
         urlInput.setFocusableInTouchMode(false);
@@ -126,7 +143,7 @@ public class MainActivity extends androidx.activity.ComponentActivity {
             @Override
             public void onPageFinished(String url) {
                 String title = webView.getTitle();
-                siteTitle.setText(title != null ? title : url);
+                siteTitle.setText((title != null && !title.isEmpty()) ? title : url);
             }
         }));
 
@@ -134,8 +151,7 @@ public class MainActivity extends androidx.activity.ComponentActivity {
             if (scrollY > oldScrollY + 20 && !isMinimized) {
                 isMinimized = true;
                 toggleCapsuleState(true);
-            } 
-            else if (scrollY < oldScrollY - 20 && isMinimized) {
+            } else if (scrollY < oldScrollY - 20 && isMinimized) {
                 isMinimized = false;
                 toggleCapsuleState(false);
             }
@@ -274,15 +290,26 @@ public class MainActivity extends androidx.activity.ComponentActivity {
         }
     }
 
-    private void toggleCapsuleState(boolean minimize) {
-        float targetTranslation = minimize ? 200f : 0f; 
-    
-        findViewById(R.id.capsule_container)
-            .animate()
-            .translationY(targetTranslation)
-            .setDuration(400)
-            .setInterpolator(new DecelerateInterpolator())
-            .start();
+    private void toggleCapsuleState(boolean isMinimized) {
+        View mainCapsule = findViewById(R.id.main_capsule_container);
+        if (miniCapsule == null) {
+            ViewStub stub = findViewById(R.id.mini_capsule_stub);
+            miniCapsule = stub.inflate();
+            miniCapsule.setVisibility(View.GONE);
+        }
+
+        if (isMinimized) {
+            mainCapsule.animate().alpha(0f).translationY(100).setDuration(300).withEndAction(() -> mainCapsule.setVisibility(View.GONE));
+        
+            miniCapsule.setVisibility(View.VISIBLE);
+            miniCapsule.setAlpha(0f);
+            miniCapsule.animate().alpha(1f).translationY(0).setDuration(300).start();
+        } else {
+            mainCapsule.setVisibility(View.VISIBLE);
+            mainCapsule.animate().alpha(1f).translationY(0).setDuration(300);
+        
+            miniCapsule.animate().alpha(0f).translationY(100).setDuration(300).withEndAction(() -> miniCapsule.setVisibility(View.GONE));
+        }
     }
 
     @Override
