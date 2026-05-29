@@ -130,7 +130,7 @@ public class MainActivity extends androidx.activity.ComponentActivity {
                 return false; 
             }
         });
--
+
         WebView.loadUrl("https://www.google.com");
 
         urlInput.setOnEditorActionListener((v, actionId, event) -> {
