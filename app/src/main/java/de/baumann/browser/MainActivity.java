@@ -39,6 +39,7 @@ public class MainActivity extends androidx.activity.ComponentActivity {
     private TextView siteTitle; 
 
     private void toggleCapsuleState(boolean isMinimized) {
+        updateWebViewPadding(isMinimized);
         View mainCapsule = findViewById(R.id.main_capsule_container);
         View miniCapsule = findViewById(R.id.mini_capsule_container);
 
@@ -224,14 +225,6 @@ public class MainActivity extends androidx.activity.ComponentActivity {
             return true;
         });
 
-        View miniCapsule = findViewById(R.id.mini_capsule_container);
-
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(miniCapsule, (v, insets) -> {
-            int bottomPadding = insets.getSystemWindowInsetBottom();
-            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), bottomPadding + 24);
-            return insets;
-        });
-
         ImageView btnUnlock = findViewById(R.id.btn_unlock);
         if (btnUnlock != null) {
             btnUnlock.setOnClickListener(v -> toggleCapsule());
@@ -293,14 +286,24 @@ public class MainActivity extends androidx.activity.ComponentActivity {
                 params.rightMargin = 16;
         
                 v.setLayoutParams(params);
-
-                if (webView != null) {
-                    webView.setPadding(0, 0, 0, v.getHeight() + params.bottomMargin);
-                }
         
                 return windowInsets;
             });
         }
+
+        getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+
+        webView.setBackgroundColor(Color.TRANSPARENT);
+
+        webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+    }
+
+    private void updateWebViewPadding(boolean isMinimized) {
+        int bottomMargin = isMinimized ? 80 : 100;
+    
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) webView.getLayoutParams();
+        params.bottomMargin = bottomMargin; 
+        webView.setLayoutParams(params);
     }
 
     @Override
