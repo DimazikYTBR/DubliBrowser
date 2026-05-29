@@ -24,6 +24,8 @@ import de.baumann.browser.DubliWebViewClient;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebViewClient;
 import android.view.animation.DecelerateInterpolator;
 
 public class MainActivity extends androidx.activity.ComponentActivity {
@@ -127,7 +129,8 @@ public class MainActivity extends androidx.activity.ComponentActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return false; 
+                view.loadUrl(request.getUrl().toString());
+                return true;
             }
         });
 
