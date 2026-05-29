@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnRefresh.setOnClickListener(v -> webView.reload());
 
-        View bottomBarContainer = findViewById(R.id.bottom_bar_container);
+        View bottomBarContainer = findViewById(R.id.main_capsule_container);
 
         if (bottomBarContainer != null) {
             ViewCompat.setOnApplyWindowInsetsListener(bottomBarContainer, (v, windowInsets) -> {
