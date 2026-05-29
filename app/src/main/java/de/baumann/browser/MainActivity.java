@@ -36,7 +36,6 @@ public class MainActivity extends androidx.activity.ComponentActivity {
     private ImageButton btnMenu;
     private View customSwitch;
     private TextView siteTitle; 
-    private WebView webView;
 
     private boolean isCapsuleLocked = true;
 
