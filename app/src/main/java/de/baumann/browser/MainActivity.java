@@ -121,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        private int lastScrollY = 0;
-        private final int SCROLL_THRESHOLD = 20;
-
         webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             boolean isScrollingDown = scrollY > oldScrollY;
 
