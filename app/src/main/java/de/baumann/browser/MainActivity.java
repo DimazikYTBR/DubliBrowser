@@ -224,6 +224,14 @@ public class MainActivity extends androidx.activity.ComponentActivity {
             return true;
         });
 
+        View miniCapsule = findViewById(R.id.mini_capsule_container);
+
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(miniCapsule, (v, insets) -> {
+            int bottomPadding = insets.getSystemWindowInsetBottom();
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), bottomPadding + 24);
+            return insets;
+        });
+
         ImageView btnUnlock = findViewById(R.id.btn_unlock);
         if (btnUnlock != null) {
             btnUnlock.setOnClickListener(v -> toggleCapsule());
