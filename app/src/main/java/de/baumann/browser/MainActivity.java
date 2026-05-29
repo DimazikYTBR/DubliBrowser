@@ -85,6 +85,7 @@ public class MainActivity extends androidx.activity.ComponentActivity {
         urlInput = findViewById(R.id.urlInput);
         btnRefresh = findViewById(R.id.btn_refresh);
         btnMenu = findViewById(R.id.btn_menu);
+        siteTitle = findViewById(R.id.siteTitle);
 
         urlInput.setEnabled(false);
         urlInput.setFocusableInTouchMode(false);
@@ -115,22 +116,42 @@ public class MainActivity extends androidx.activity.ComponentActivity {
             return false;
         });
 
-        webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            boolean isScrollingDown = scrollY > oldScrollY;
+        webView.setWebViewClient(new DubliWebViewClient(new DubliWebViewClient.WebViewClientCallback() {
+            @Override
+            public void onPageStarted(String url) {
+                siteTitle.setText("Loading...");
+            }
 
-            if (scrollY > 150 && !isMinimized && isScrollingDown) {
+            @Override
+            public void onPageFinished(String url) {
+                String title = webView.getTitle();
+                siteTitle.setText(title != null ? title : url);
+            }
+        }));
+
+        webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY + 20 && !isMinimized) {
+                isMinimized = true;
                 toggleCapsuleState(true);
             } 
-            else if (scrollY < oldScrollY - SCROLL_THRESHOLD && isMinimized) {
+            else if (scrollY < oldScrollY - 20 && isMinimized) {
+                isMinimized = false;
                 toggleCapsuleState(false);
             }
         });
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
-                return true;
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                String title = view.getTitle();
+                TextView siteTitle = findViewById(R.id.siteTitle);
+        
+                if (title != null && !title.isEmpty()) {
+                    siteTitle.setText(title);
+                } else {
+                    siteTitle.setText(url);
+                }
             }
         });
 
@@ -253,30 +274,14 @@ public class MainActivity extends androidx.activity.ComponentActivity {
     }
 
     private void toggleCapsuleState(boolean minimize) {
-        if (isMinimized == minimize) return;
-        isMinimized = minimize;
-
-        final View container = findViewById(R.id.main_capsule_container);
-        final View btnRefresh = findViewById(R.id.btn_refresh);
-        final View btnMenu = findViewById(R.id.btn_menu);
-
-        int targetWidth = minimize ? (int) (160 * getResources().getDisplayMetrics().density) : ViewGroup.LayoutParams.MATCH_PARENT;
+        float targetTranslation = minimize ? 200f : 0f; 
     
-        ValueAnimator widthAnimator = ValueAnimator.ofInt(container.getWidth(), targetWidth);
-        widthAnimator.addUpdateListener(animation -> {
-            ViewGroup.LayoutParams params = container.getLayoutParams();
-            params.width = (int) animation.getAnimatedValue();
-            container.setLayoutParams(params);
-        });
-
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(btnRefresh, "alpha", minimize ? 0f : 1f);
-        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(btnMenu, "alpha", minimize ? 0f : 1f);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(widthAnimator, alphaAnimator, alphaAnimator2);
-        animatorSet.setDuration(300);
-        animatorSet.setInterpolator(new DecelerateInterpolator());
-        animatorSet.start();
+        findViewById(R.id.capsule_container)
+            .animate()
+            .translationY(targetTranslation)
+            .setDuration(400)
+            .setInterpolator(new DecelerateInterpolator())
+            .start();
     }
 
     @Override
