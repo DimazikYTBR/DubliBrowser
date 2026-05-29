@@ -38,11 +38,24 @@ public class MainActivity extends androidx.activity.ComponentActivity {
     private View customSwitch;
     private TextView siteTitle; 
 
-    miniCapsule.setAlpha(0f);
-    miniCapsule.setVisibility(View.VISIBLE);
-    miniCapsule.animate().alpha(1f).setDuration(300).start();
-    
-    findViewById(R.id.main_capsule_container).animate().alpha(0f).setDuration(300).start();
+    private void toggleCapsuleState(boolean isMinimized) {
+        View mainCapsule = findViewById(R.id.main_capsule_container);
+        View miniCapsule = findViewById(R.id.mini_capsule_container);
+
+        if (isMinimized) {
+            mainCapsule.animate().alpha(0f).translationY(100).setDuration(300)
+                .withEndAction(() -> mainCapsule.setVisibility(View.GONE));
+
+            miniCapsule.setAlpha(0f);
+            miniCapsule.setVisibility(View.VISIBLE);
+            miniCapsule.animate().alpha(1f).translationY(0).setDuration(300).start();
+        } else {
+            mainCapsule.setVisibility(View.VISIBLE);
+            mainCapsule.animate().alpha(1f).translationY(0).setDuration(300).start();
+
+            miniCapsule.animate().alpha(0f).translationY(100).setDuration(300)
+                .withEndAction(() -> miniCapsule.setVisibility(View.GONE));
+        }
     }
 
     private boolean isCapsuleLocked = true;
@@ -279,25 +292,6 @@ public class MainActivity extends androidx.activity.ComponentActivity {
         
                 return windowInsets;
             });
-        }
-    }
-
-    private void toggleCapsuleState(boolean isMinimized) {
-        View miniCapsule = findViewById(R.id.mini_capsule_container);
-
-        if (isMinimized) {
-            mainCapsule.animate().alpha(0f).translationY(100).setDuration(300)
-            .withEndAction(() -> mainCapsule.setVisibility(View.GONE));
-
-            miniCapsule.setAlpha(0f);
-            miniCapsule.setVisibility(View.VISIBLE);
-            miniCapsule.animate().alpha(1f).translationY(0).setDuration(300).start();
-        } else {
-            mainCapsule.setVisibility(View.VISIBLE);
-            mainCapsule.animate().alpha(1f).translationY(0).setDuration(300);
-
-            miniCapsule.animate().alpha(0f).translationY(100).setDuration(300)
-            .withEndAction(() -> miniCapsule.setVisibility(View.GONE));
         }
     }
 
