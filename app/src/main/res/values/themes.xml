@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.AppCompat.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">#007AFF</item>
-        <item name="colorPrimaryDark">#000000</item>
-        <item name="colorSecondary">#007AFF</item>
-        <item name="colorAccent">#007AFF</item>
-    </style>
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar.Bridge">
+        <item name="colorPrimary">@color/md_theme_dark_primary</item>
+        <item name="android:windowBackground">@color/md_theme_dark_background</item>
+        </style>
 </resources>
