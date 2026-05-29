@@ -26,7 +26,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.view.animation.DecelerateInterpolator;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends androidx.activity.ComponentActivity {
 
     private WebView webView;
     private EditText urlInput;
