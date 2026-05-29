@@ -56,33 +56,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isMinimized = false;
-
-    private void toggleCapsuleState(boolean minimize) {
-        if (isMinimized == minimize) return;
-        isMinimized = minimize;
-
-        final View container = findViewById(R.id.main_capsule_container);
-        final View btnRefresh = findViewById(R.id.btn_refresh);
-        final View btnMenu = findViewById(R.id.btn_menu);
-
-        int targetWidth = minimize ? (int) (160 * getResources().getDisplayMetrics().density) : ViewGroup.LayoutParams.MATCH_PARENT;
-    
-        ValueAnimator widthAnimator = ValueAnimator.ofInt(container.getWidth(), targetWidth);
-        widthAnimator.addUpdateListener(animation -> {
-            ViewGroup.LayoutParams params = container.getLayoutParams();
-            params.width = (int) animation.getAnimatedValue();
-            container.setLayoutParams(params);
-        });
-
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(btnRefresh, "alpha", minimize ? 0f : 1f);
-        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(btnMenu, "alpha", minimize ? 0f : 1f);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(widthAnimator, alphaAnimator, alphaAnimator2);
-        animatorSet.setDuration(300);
-        animatorSet.setInterpolator(new DecelerateInterpolator());
-        animatorSet.start();
-    }
+    private int lastScrollY = 0;
+    private final int SCROLL_THRESHOLD = 20;
 
     private BrowserViewModel viewModel;
 
@@ -276,6 +251,33 @@ public class MainActivity extends AppCompatActivity {
                 return windowInsets;
             });
         }
+    }
+
+    private void toggleCapsuleState(boolean minimize) {
+        if (isMinimized == minimize) return;
+        isMinimized = minimize;
+
+        final View container = findViewById(R.id.main_capsule_container);
+        final View btnRefresh = findViewById(R.id.btn_refresh);
+        final View btnMenu = findViewById(R.id.btn_menu);
+
+        int targetWidth = minimize ? (int) (160 * getResources().getDisplayMetrics().density) : ViewGroup.LayoutParams.MATCH_PARENT;
+    
+        ValueAnimator widthAnimator = ValueAnimator.ofInt(container.getWidth(), targetWidth);
+        widthAnimator.addUpdateListener(animation -> {
+            ViewGroup.LayoutParams params = container.getLayoutParams();
+            params.width = (int) animation.getAnimatedValue();
+            container.setLayoutParams(params);
+        });
+
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(btnRefresh, "alpha", minimize ? 0f : 1f);
+        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(btnMenu, "alpha", minimize ? 0f : 1f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(widthAnimator, alphaAnimator, alphaAnimator2);
+        animatorSet.setDuration(300);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+        animatorSet.start();
     }
 
     @Override
